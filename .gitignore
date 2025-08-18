@@ -7,9 +7,6 @@ venv/
 env/
 
 # 数据文件 (我们手动管理，不上传)
-/data/
-/old_versions/
-*.mat
 
 # 结果和产出 (模型、图片等都不上传)
 /results/
