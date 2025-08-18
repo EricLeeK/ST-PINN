@@ -5,14 +5,14 @@ import numpy as np
 
 
 class SeparatedPINN_PolynomialTime(nn.Module):
-  """
+    """
     一个PINN模型，时间分支使用固定的多项式基。
     解的形式: u(x,t) = Σ C_i(x) * t^i
     
     参数:
         spatial_layers (list): 空间MLP的层级结构, e.g., [64, 64].
         poly_degree (int): 时间多项式的项数 L (即 t^0 到 t^(L-1)).
-   """
+    """
     def __init__(self, spatial_layers, poly_degree):
         super(SeparatedPINN_PolynomialTime, self).__init__()
         self.poly_degree = poly_degree
