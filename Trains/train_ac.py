@@ -1,5 +1,7 @@
-#本文件将进行AC方程的一切实验，历史实验请在git中查找import torch
-
+#本文件将进行AC方程的一切实验，历史实验请在git中查找
+import sys
+import os
+from pathlib import Path 
 import torch
 import torch.nn as nn
 import numpy as np
@@ -7,7 +9,19 @@ import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 import scipy.io
 import os
-import json # 用于保存config
+import json 
+
+# =============================================================================
+# 0. 动态路径设置 (放在所有其他代码之前)
+# =============================================================================
+# 获取当前文件(train_ac.py)的绝对路径
+# __file__ 是一个内置变量，代表当前脚本的文件名
+current_file_path = Path(__file__).resolve()
+# 获取项目根目录 (即 train/ 文件夹的父目录)
+project_root = current_file_path.parent.parent
+# 将项目根目录添加到Python搜索路径
+sys.path.insert(0, str(project_root)) # sys.path 需要字符串
+
 
 # 从我们的模型库文件中导入模型类
 from src.models import SeparatedPINN_PolynomialTime, SeparatedPINN_FourierTime
@@ -17,7 +31,7 @@ from src.models import SeparatedPINN_PolynomialTime, SeparatedPINN_FourierTime
 # =============================================================================
 config = {
     # --- 结果保存配置 ---
-    "experiment_name": "AC_Fourier_Linear_Freqs_v1", # 将作为结果子文件夹名
+    "experiment_name": "AC_Fourier_Linear_Freqs_v2", # 将作为结果子文件夹名
     
     # --- 模型选择 ---
     "model_type": "fourier",  # 可选: "polynomial" 或 "fourier"
@@ -29,7 +43,7 @@ config = {
     "freq_type": "linear",     # 可选: 'linear', 'exponential'
     
     # --- 训练参数 ---
-    "epochs": 4000,
+    "epochs": 3000,
     "learning_rate": 1e-3,
     "loss_weights": { "ic": 100.0, "bc": 100.0, "pde": 1.0 },
     
