@@ -45,8 +45,8 @@ class SeparatedPINN_FourierTime(nn.Module):
         freq_dist (str): 频率分布方式。可选 'linear' 或 'exponential'.
         freq_scale (float): 频率的缩放因子.
     """
-    # --- 核心修改 1: 在 __init__ 中添加 freq_dist 参数 ---
-    def __init__(self, spatial_layers, num_freqs, freq_dist="linear", freq_scale=1.0):
+    # --- 核心修改 1: 在 __init__ 中添加 freq_type 参数 ---
+    def __init__(self, spatial_layers, num_freqs, freq_type="linear", freq_scale=1.0):
         super(SeparatedPINN_FourierTime, self).__init__()
         self.num_freqs = num_freqs
         
@@ -62,14 +62,14 @@ class SeparatedPINN_FourierTime(nn.Module):
         self.spatial_net = nn.Sequential(*modules)
         
         # --- 核心修改 2: 根据 freq_dist 的值选择频率生成方式 ---
-        if freq_dist == "linear":
+        if freq_type == "linear":
             # 线性增长: 1π, 2π, 3π, ...
             self.freqs = freq_scale * torch.pi * torch.arange(1, num_freqs + 1)
-        elif freq_dist == "exponential":
+        elif freq_type == "exponential":
             # 指数增长: 1π, 2π, 4π, ...
             self.freqs = freq_scale * torch.pi * (2.0 ** torch.arange(0, num_freqs))
         else:
-            raise ValueError(f"未知的频率分布 '{freq_dist}'. 请选择 'linear' 或 'exponential'.")
+            raise ValueError(f"未知的频率分布 '{freq_type}'. 请选择 'linear' 或 'exponential'.")
 
     def forward(self, x, t):
         if self.freqs.device != t.device:
