@@ -19,8 +19,13 @@
 torch>=2.0.0
 
 # --- Scientific Computing & Data Handling ---
-numpy>=1.23.0      # Fundamental package for numerical operations with arrays
-scipy>=1.9.0       # Used for scientific tools, in this project specifically for loading .mat reference files (scipy.io)
+numpy==1.24.2     # Fundamental package for numerical operations with arrays
+scipy==1.10.1       # Used for scientific tools, in this project specifically for loading .mat reference files (scipy.io)
 
 # --- Plotting & Visualization ---
-matplotlib>=3.6.0  # Used for generating all plots and result visualizations
+matplotlib==3.7.1 # Used for generating all plots and result visualizations
+
+dill==0.3.6
+pandas==2.0.0
+scikit-learn==1.2.2
+scikit-optimize==0.9.0

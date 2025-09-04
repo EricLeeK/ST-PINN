@@ -20,8 +20,9 @@ from src.utils.callbacks import TesterCallback
 def get_model():
     # Initialize 2D Burgers equation
     pde = Burgers2D(
-        datapath="ref/burgers2d_0.dat",
-        icpath=("ref/burgers2d_init_u_0.dat", "ref/burgers2d_init_v_0.dat"),
+        datapath=r"D:/scientific_research/SelfCode/Spatio_Temporal_Neural_Network/PINNacle-fork2test/ref/burgers2d_0.dat",
+        icpath=(r"D:/scientific_research/SelfCode/Spatio_Temporal_Neural_Network/PINNacle-fork2test/ref/burgers2d_init_u_0.dat", 
+                r"D:/scientific_research/SelfCode/Spatio_Temporal_Neural_Network/PINNacle-fork2test/ref/burgers2d_init_v_0.dat"),
         nu=0.001,  # Viscosity parameter
         L=4,       # Domain size
         T=1        # Time horizon
@@ -36,7 +37,8 @@ def get_model():
         spatial_layers=[128, 128, 128, 128],  # Deeper network for 2D problem
         num_frequencies=15,                    # Number of Fourier modes
         freq_type="linear",                    # Linear frequency distribution
-        freq_scale=2.0                         # Frequency scaling factor
+        freq_scale=2.0,                         # Frequency scaling factor
+        output_dim=2                         
     )
     
     # Create and compile model

@@ -20,7 +20,7 @@ from src.utils.callbacks import TesterCallback
 def get_model():
     # Initialize 1D Burgers equation with same parameters as original
     pde = Burgers1D(
-        datapath="ref/burgers1d.dat",  # Correct relative path
+        datapath="D:/scientific_research/SelfCode/Spatio_Temporal_Neural_Network/PINNacle-fork2test/ref/burgers1d.dat",  # Correct relative path
         geom=[-1, 1],           # Spatial domain
         time=[0, 1],            # Time domain  
         nu=0.01 / 3.14159       # Viscosity parameter (same as original)
