@@ -52,8 +52,6 @@ $$
 
 ## 环境搭建
 
-## 环境搭建
-
 1.  **克隆仓库**
     ```bash
     git clone <your-repository-url>
