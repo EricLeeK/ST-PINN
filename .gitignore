@@ -14,10 +14,7 @@ env/
 /results/
 
 /models/
-*.png
-*.jpg
-*.pt
-*.pth
+
 
 # IDE 配置
 .idea/
