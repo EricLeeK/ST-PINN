@@ -1,0 +1,28 @@
+Traceback (most recent call last):
+  File "/root/autodl-tmp/ST-PINN/PINNacle-fork2test/run_experiment_burgers1d_fourier.py", line 67, in <module>
+    trainer.train_all()
+  File "/root/autodl-tmp/ST-PINN/PINNacle-fork2test/trainer.py", line 98, in train_all
+    model = get_model()
+            ^^^^^^^^^^^
+  File "/root/autodl-tmp/ST-PINN/PINNacle-fork2test/run_experiment_burgers1d_fourier.py", line 22, in get_model
+    pde = Burgers1D(
+          ^^^^^^^^^^
+  File "/root/autodl-tmp/ST-PINN/PINNacle-fork2test/src/pde/burgers.py", line 31, in __init__
+    self.load_ref_data(datapath)
+  File "/root/autodl-tmp/ST-PINN/PINNacle-fork2test/src/pde/baseclass.py", line 213, in load_ref_data
+    super(BaseTimePDE, self).load_ref_data(datapath, transform_fn, t_transpose)
+  File "/root/autodl-tmp/ST-PINN/PINNacle-fork2test/src/pde/baseclass.py", line 92, in load_ref_data
+    self.ref_data = np.loadtxt(datapath, comments="%", encoding='utf-8').astype(np.float32)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/envs/stpinn_env/lib/python3.11/site-packages/numpy/lib/npyio.py", line 1356, in loadtxt
+    arr = _read(fname, dtype=dtype, comment=comment, delimiter=delimiter,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/envs/stpinn_env/lib/python3.11/site-packages/numpy/lib/npyio.py", line 975, in _read
+    fh = np.lib._datasource.open(fname, 'rt', encoding=encoding)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/envs/stpinn_env/lib/python3.11/site-packages/numpy/lib/_datasource.py", line 193, in open
+    return ds.open(path, mode, encoding=encoding, newline=newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/envs/stpinn_env/lib/python3.11/site-packages/numpy/lib/_datasource.py", line 533, in open
+    raise FileNotFoundError(f"{path} not found.")
+FileNotFoundError: ref/burgers1d.dat not found.
