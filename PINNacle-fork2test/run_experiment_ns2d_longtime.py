@@ -20,7 +20,7 @@ from src.utils.callbacks import TesterCallback
 def get_model():
     # Initialize 2D Navier-Stokes equation for long-time dynamics
     pde = NS2D_LongTime(
-        datapath=r"PINNacle-fork2test/ref/ns_long.dat",
+        datapath=r"ref/ns_long.dat",
         nu=1 / 100,                      # Kinematic viscosity (Reynolds number = 100)
         bbox=[0, 2, 0, 1, 0, 5]          # [x_min, x_max, y_min, y_max, t_min, t_max]
     )

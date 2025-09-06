@@ -21,7 +21,7 @@ from src.utils.callbacks import TesterCallback
 def get_model():
     # Initialize Kuramoto-Sivashinsky equation
     pde = KuramotoSivashinskyEquation(
-        datapath=r"PINNacle-fork2test/ref/Kuramoto_Sivashinsky.dat",
+        datapath=r"ref/Kuramoto_Sivashinsky.dat",
         bbox=[0, 2 * np.pi, 0, 1],     # [x_min, x_max, t_min, t_max]
         alpha=100 / 16,                # Nonlinear coefficient
         beta=100 / (16 * 16),          # Second-order diffusion coefficient

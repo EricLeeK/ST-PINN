@@ -20,7 +20,7 @@ from src.utils.callbacks import TesterCallback
 def get_model():
     # Initialize Gray-Scott reaction-diffusion system
     pde = GrayScottEquation(
-        datapath=r"PINNacle-fork2test/ref/grayscott.dat",
+        datapath=r"ref/grayscott.dat",
         bbox=[-1, 1, -1, 1, 0, 200],   # [x_min, x_max, y_min, y_max, t_min, t_max]
         b=0.04,                        # Feed rate
         d=0.1,                         # Kill rate  

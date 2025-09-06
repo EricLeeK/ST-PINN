@@ -20,7 +20,7 @@ from src.utils.callbacks import TesterCallback
 def get_model():
     # Initialize 2D Heat equation with varying coefficients
     pde = Heat2D_VaryingCoef(
-        datapath=r"PINNacle-fork2test/ref/heat_darcy.dat",
+        datapath=r"ref/heat_darcy.dat",
         bbox=[0, 1, 0, 1, 0, 5],        # [x_min, x_max, y_min, y_max, t_min, t_max]
         A=200,                          # Source term amplitude
         m=(1, 5, 1)                     # Source term frequencies
