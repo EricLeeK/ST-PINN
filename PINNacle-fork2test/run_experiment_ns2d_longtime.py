@@ -1,5 +1,5 @@
-# run_experiment_heat2d.py
-# Example experiment for 2D Heat equation with varying coefficients using Fourier time basis
+# run_experiment_ns2d_longtime.py
+# Experiment for 2D Navier-Stokes long-time dynamics using polynomial time basis
 
 # === Backend setup ===
 import os
@@ -12,40 +12,39 @@ import torch
 from trainer import Trainer 
 
 # Import PDE class and model
-from src.pde.heat import Heat2D_VaryingCoef
+from src.pde.ns import NS2D_LongTime
 from src.model.st_pinn import SeparatedNetPolynomial
 from src.utils.callbacks import TesterCallback
 
 # Define model factory function
 def get_model():
-    # Initialize 2D Heat equation with varying coefficients
-    pde = Heat2D_VaryingCoef(
-        datapath=r"PINNacle-fork2test/ref/heat_darcy.dat",
-        bbox=[0, 1, 0, 1, 0, 5],        # [x_min, x_max, y_min, y_max, t_min, t_max]
-        A=200,                          # Source term amplitude
-        m=(1, 5, 1)                     # Source term frequencies
+    # Initialize 2D Navier-Stokes equation for long-time dynamics
+    pde = NS2D_LongTime(
+        datapath=r"PINNacle-fork2test/ref/ns_long.dat",
+        nu=1 / 100,                      # Kinematic viscosity (Reynolds number = 100)
+        bbox=[0, 2, 0, 1, 0, 5]          # [x_min, x_max, y_min, y_max, t_min, t_max]
     )
     
     # Create separated network with polynomial time basis
-    # Note: Heat2D has input_dim=3 (x, y, t) and output_dim=1
+    # NS2D has input_dim=3 (x, y, t) and output_dim=3 (u, v, p)
     net = SeparatedNetPolynomial(
         layer_sizes=[pde.input_dim, 0, pde.output_dim],
         activation=None, 
         kernel_initializer=None,
-        spatial_layers=[64, 64, 64],    # Spatial network architecture
-        poly_degree=15                   # Polynomial time basis degree
+        spatial_layers=[128, 128, 128, 128, 128],  # Very deep network for NS complexity
+        poly_degree=20                             # Moderate polynomial degree for long-time dynamics
     )
     
     # Create and compile model
     model = pde.create_model(net)
-    model.compile(optimizer=torch.optim.Adam(net.parameters(), lr=1e-3))
+    model.compile(optimizer=torch.optim.Adam(net.parameters(), lr=5e-4))  # Conservative learning rate
     
     return model
 
 # Define training parameters
 train_args = {
-    'iterations': 15000,
-    'callbacks': [TesterCallback(log_every=1000)]
+    'iterations': 35000,  # Many iterations for complex NS dynamics
+    'callbacks': [TesterCallback(log_every=2500)]
 }
 
 # Main execution
@@ -57,11 +56,11 @@ if __name__ == "__main__":
         torch.set_default_dtype(torch.float32)
 
     # Initialize trainer
-    trainer = Trainer(exp_name="Heat2D_VaryingCoef_Polynomial", device="0")
+    trainer = Trainer(exp_name="NS2D_LongTime_Polynomial", device="0")
     
     # Add experiment task
     trainer.add_task(get_model, train_args)
 
-    print(">>> 开始实验！2D热方程（变系数）+ 多项式时间基")
+    print(">>> 开始实验！2D Navier-Stokes长时间动力学 + 多项式时间基")
     trainer.train_all()
     print(">>> 实验完成！")

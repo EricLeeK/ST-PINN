@@ -20,8 +20,9 @@ from src.utils.callbacks import TesterCallback
 def get_model():
     # Initialize 2D Burgers equation
     pde = Burgers2D(
-        datapath="ref/burgers2d_0.dat",
-        icpath=("ref/burgers2d_init_u_0.dat", "ref/burgers2d_init_v_0.dat"),
+        datapath=r"PINNacle-fork2test/ref/burgers2d_0.dat",
+        icpath=(r"PINNacle-fork2test/ref/burgers2d_init_u_0.dat", 
+                r"PINNacle-fork2test/ref/burgers2d_init_v_0.dat"),
         nu=0.001,  # Viscosity parameter
         L=4,       # Domain size
         T=1        # Time horizon
