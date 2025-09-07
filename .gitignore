@@ -19,3 +19,6 @@ env/
 # IDE 配置
 .idea/
 .vscode/
+
+# Generated visualization files (testing artifacts)
+runs/*/visualizations/
