@@ -15,7 +15,7 @@ from trainer import Trainer
 from src.pde.burgers import Burgers1D
 from src.model.st_pinn import SeparatedNetFourier
 from src.utils.callbacks import TesterCallback
-
+from src.utils.visualization_utils import generate_burgers_heatmaps
 # Define model factory function
 def get_model():
     # Initialize 1D Burgers equation with same parameters as original
@@ -73,7 +73,6 @@ if __name__ == "__main__":
     print("\n>>> 开始生成可视化图表...")
     
     # Import visualization utilities
-    from visualization_utils import generate_burgers_heatmaps
     import glob
     
     # Find the latest model checkpoint

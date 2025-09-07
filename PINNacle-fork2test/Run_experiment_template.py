@@ -14,7 +14,7 @@ from trainer import Trainer
 # === 关键修正2：导入正确的类名 ===
 from src.pde.burgers import Burgers1D  # <-- 正确的类名是 Burgers
 # ==================================
-
+from src.utils.visualization_utils import generate_burgers_heatmaps
 from src.model.st_pinn import SeparatedNetPolynomial
 from src.utils.callbacks import TesterCallback
 
