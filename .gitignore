@@ -20,5 +20,3 @@ env/
 .idea/
 .vscode/
 
-# Generated visualization files (testing artifacts)
-runs/*/visualizations/
