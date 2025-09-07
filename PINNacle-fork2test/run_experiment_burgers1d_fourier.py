@@ -65,12 +65,12 @@ if __name__ == "__main__":
 
     print(">>> 开始实验！1D伯格斯方程 + 傅里叶时间基（对比实验）")
     trainer.train_all()
-    print(">>> 实验完成！")
+    print(">>> Experiment completed!")
     
     # =============================================================================
-    # 可视化部分：生成解析解、模型解和误差热图
+    # Visualization: generate analytical solution, model solution, and error heatmaps
     # =============================================================================
-    print("\n>>> 开始生成可视化图表...")
+    print("\n>>> Starting visualization generation...")
     
     # Import visualization utilities
     import glob
@@ -111,18 +111,18 @@ if __name__ == "__main__":
             results = generate_burgers_heatmaps(test_model, exp_name, device)
             
             if "error" not in results:
-                print(f"可视化完成！L2误差: {results['l2_error']:.6f}")
-                print(f"热图保存路径: {results['heatmap_path']}")
-                print(f"时间切片图保存路径: {results['slices_path']}")
+                print(f"Visualization completed! L2 error: {results['l2_error']:.6f}")
+                print(f"Heatmap saved to: {results['heatmap_path']}")
+                print(f"Time slices plot saved to: {results['slices_path']}")
             else:
-                print(f"可视化失败: {results['error']}")
+                print(f"Visualization failed: {results['error']}")
                 
         except Exception as e:
-            print(f"加载模型或生成可视化时出错: {e}")
+            print(f"Error loading model or generating visualization: {e}")
             import traceback
             traceback.print_exc()
     else:
-        print(f"未找到模型检查点，跳过可视化")
-        print(f"搜索路径: {checkpoint_pattern}")
+        print(f"Model checkpoint not found, skipping visualization")
+        print(f"Search path: {checkpoint_pattern}")
     
-    print(">>> 所有任务完成！")
+    print(">>> All tasks completed!")

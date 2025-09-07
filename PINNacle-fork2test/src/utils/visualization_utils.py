@@ -1,7 +1,13 @@
 # visualization_utils.py
 # Reusable visualization functions for PINN experiments
 
-import torch
+try:
+    import torch
+    TORCH_AVAILABLE = True
+except ImportError:
+    TORCH_AVAILABLE = False
+    torch = None
+
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
@@ -17,49 +23,101 @@ def generate_burgers_heatmaps(model, exp_name, device='cpu', data_file=None):
         model: Trained PINN model
         exp_name: Experiment name for saving plots
         device: Device to run computations on
-        data_file: Path to reference solution .mat file (optional)
+        data_file: Path to reference solution file (optional)
     
     Returns:
         dict: Dictionary containing L2 error and plot file paths
     """
     
-    # Default data file path
+    # Default data file path - using PINNacle-fork2test data
     if data_file is None:
-        data_file = '/home/runner/work/ST-PINN/ST-PINN/data/burgers_shock.mat'
+        data_file = 'PINNacle-fork2test/ref/burgers1d.dat'
     
     # Create results directory
     results_dir = f"runs/{exp_name}/visualizations"
     os.makedirs(results_dir, exist_ok=True)
     
     try:
-        # Load reference solution
+        # Load reference solution from .dat file
         print(f"Loading reference solution from: {data_file}")
-        data = scipy.io.loadmat(data_file)
-        x_exact_vec = data['x'].flatten()
-        t_exact_vec = data['t'].flatten()
-        U_exact = np.real(data['usol'])
+        
+        # Read the .dat file
+        with open(data_file, 'r') as f:
+            lines = f.readlines()
+        
+        # Find the header line with time information
+        header_line = None
+        data_start_line = None
+        for i, line in enumerate(lines):
+            if line.startswith('% X') and 't=' in line:
+                header_line = line
+                data_start_line = i + 1
+                break
+        
+        if header_line is None:
+            raise ValueError("Could not find header line with time information")
+        
+        # Parse time values from header
+        import re
+        time_matches = re.findall(r't=([\d.]+)', header_line)
+        t_exact_vec = np.array([float(t) for t in time_matches])
+        
+        # Read the data lines (skip comments)
+        data_lines = []
+        for line in lines[data_start_line:]:
+            line = line.strip()
+            if line and not line.startswith('%'):
+                data_lines.append(line)
+        
+        # Parse the data
+        data_matrix = []
+        x_values = []
+        for line in data_lines:
+            values = [float(x) for x in line.split()]
+            x_values.append(values[0])  # First column is x
+            data_matrix.append(values[1:])  # Rest are u values at different times
+        
+        x_exact_vec = np.array(x_values)
+        U_exact = np.array(data_matrix)  # Shape: (n_x, n_t)
+        
         print(f"Reference solution shape: {U_exact.shape}")
         print(f"x range: [{x_exact_vec.min():.3f}, {x_exact_vec.max():.3f}]")
         print(f"t range: [{t_exact_vec.min():.3f}, {t_exact_vec.max():.3f}]")
         
     except FileNotFoundError:
         print(f"Error: Reference solution file not found at {data_file}")
-        print("Please ensure the burgers_shock.mat file is available.")
+        print("Please ensure the burgers1d.dat file is available.")
         return {"error": "Reference file not found"}
+    except Exception as e:
+        print(f"Error parsing reference solution file: {e}")
+        return {"error": f"File parsing error: {e}"}
     
     # Generate prediction grid
-    model.net.eval()
-    with torch.no_grad():
-        # Create coordinate grid matching the reference solution
-        T_grid, X_grid = np.meshgrid(t_exact_vec, x_exact_vec)
-        x_flat = torch.tensor(X_grid.flatten(), dtype=torch.float32, device=device).unsqueeze(1)
-        t_flat = torch.tensor(T_grid.flatten(), dtype=torch.float32, device=device).unsqueeze(1)
+    if hasattr(model, 'net'):
+        model.net.eval()
+    
+    # Create coordinate grid matching the reference solution
+    T_grid, X_grid = np.meshgrid(t_exact_vec, x_exact_vec)
+    
+    if TORCH_AVAILABLE and torch is not None:
+        with torch.no_grad():
+            x_flat = torch.tensor(X_grid.flatten(), dtype=torch.float32, device=device).unsqueeze(1)
+            t_flat = torch.tensor(T_grid.flatten(), dtype=torch.float32, device=device).unsqueeze(1)
+            
+            # Create input tensor [x, t] for the model
+            inputs = torch.cat([x_flat, t_flat], dim=1)
+            
+            # Get model predictions - use DeepXDE predict method
+            u_pred_flat = model.predict(inputs.cpu().numpy())
+            U_pred = u_pred_flat.reshape(X_grid.shape)
+    else:
+        # Fallback for when torch is not available (testing)
+        x_flat = X_grid.flatten().reshape(-1, 1)
+        t_flat = T_grid.flatten().reshape(-1, 1)
+        inputs = np.hstack([x_flat, t_flat])
         
-        # Create input tensor [x, t] for the model
-        inputs = torch.cat([x_flat, t_flat], dim=1)
-        
-        # Get model predictions - use DeepXDE predict method
-        u_pred_flat = model.predict(inputs.cpu().numpy())
+        # Get model predictions
+        u_pred_flat = model.predict(inputs)
         U_pred = u_pred_flat.reshape(X_grid.shape)
     
     # Calculate error
