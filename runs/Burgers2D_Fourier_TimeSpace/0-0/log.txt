@@ -2,12 +2,15 @@
 Warning: 725 points required, but 729 points sampled.
 Warning: 32768 points required, but 33534 points sampled.
 Compiling model...
+
 'compile' took 0.000090 s
+
 
 PDE Class Name: Burgers2D
 Training model...
 
 Step      Train loss                                                                          Test loss                                                                           Test metric
+
 0         [2.93e+02, 4.14e+02, 7.22e-01, 1.52e+00, 7.22e-02, 9.39e-02, 1.12e-01, 9.64e-02]    [3.31e+02, 4.94e+02, 7.22e-01, 1.52e+00, 7.22e-02, 9.39e-02, 1.12e-01, 9.64e-02]    []  
 100       [1.46e-01, 1.90e-01, 7.22e-01, 9.95e-01, 4.98e-04, 3.85e-04, 4.29e-04, 3.66e-04]    [1.29e-01, 1.80e-01, 7.22e-01, 9.95e-01, 4.98e-04, 3.85e-04, 4.29e-04, 3.66e-04]    []  
 200       [5.96e-02, 1.16e-01, 7.22e-01, 9.93e-01, 1.91e-04, 1.96e-04, 1.74e-04, 1.43e-04]    [5.34e-02, 1.18e-01, 7.22e-01, 9.93e-01, 1.91e-04, 1.96e-04, 1.74e-04, 1.43e-04]    []  
@@ -287,3 +290,4 @@ Epoch 25000: saving model to runs/Burgers2D_Fourier_TimeSpace/0-0/25000.pt ...
 
 *****  End #0-0  *****
 >>> 实验完成！
+

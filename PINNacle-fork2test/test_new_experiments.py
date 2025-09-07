@@ -72,8 +72,9 @@ def test_experiment_setups():
     # Test 5: Burgers1D with Fourier
     print("\n5. Testing Burgers1D with Fourier...")
     from src.pde.burgers import Burgers1D
-    
-    pde = Burgers1D(datapath="ref/burgers1d.dat", geom=[-1, 1], time=[0, 1], nu=0.01/3.14159)
+
+    pde = Burgers1D(datapath="D:/scientific_research/SelfCode/Spatio_Temporal_Neural_Network/PINNacle-fork2test/ref/burgers1d.dat", geom=[-1, 1], time=[0, 1], nu=0.01/3.14159)     # 注意此处的路径需要根据实际情况修改
+
     print(f"   ✓ PDE created: input_dim={pde.input_dim}, output_dim={pde.output_dim}")
     
     net = SeparatedNetFourier(

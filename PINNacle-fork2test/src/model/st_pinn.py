@@ -14,15 +14,18 @@ class SeparatedNetPolynomial(dde.nn.pytorch.NN):
         activation,
         kernel_initializer,
         spatial_layers=[64, 64, 64],
-        poly_degree=20
+        poly_degree=20,
+        output_dim=1  # 新增：支持多输出
     ):
         super().__init__()
         self.poly_degree = poly_degree
+        self.output_dim = output_dim
         
         # Determine spatial and output dimensions from layer_sizes
         self.total_input_dim = layer_sizes[0]  # Total input dimension (spatial + time)
         self.output_dim = layer_sizes[-1]      # Output dimension
         self.spatial_input_dim = self.total_input_dim - 1  # Spatial dims = total - 1 (time)
+
         
         # Spatial network outputs poly_degree features for each output component
         spatial_output_dim = self.poly_degree * self.output_dim
@@ -36,6 +39,7 @@ class SeparatedNetPolynomial(dde.nn.pytorch.NN):
         self.spatial_net = nn.Sequential(*modules)
 
     def forward(self, inputs):
+
         # Split spatial and temporal coordinates
         spatial_coords = inputs[:, :-1]  # All columns except last
         t = inputs[:, -1:]               # Last column (time)
@@ -54,6 +58,7 @@ class SeparatedNetPolynomial(dde.nn.pytorch.NN):
         # temporal_features: [batch, poly_degree]
         output = torch.sum(spatial_features * temporal_features.unsqueeze(1), dim=2)  # [batch, output_dim]
         
+
         return output
 
 
@@ -70,11 +75,14 @@ class SeparatedNetFourier(dde.nn.pytorch.NN):
         spatial_layers=[64, 64, 64],
         num_frequencies=10,
         freq_type="linear",
-        freq_scale=1.0
+        freq_scale=1.0,
+        output_dim=1  # 新增：支持多输出
     ):
         super().__init__()
         self.num_frequencies = num_frequencies
+        self.output_dim = output_dim
         
+
         # Determine spatial and output dimensions from layer_sizes
         self.total_input_dim = layer_sizes[0]  # Total input dimension (spatial + time)
         self.output_dim = layer_sizes[-1]      # Output dimension
@@ -82,6 +90,7 @@ class SeparatedNetFourier(dde.nn.pytorch.NN):
         
         # Spatial network outputs 2*num_frequencies features for each output component
         spatial_output_dim = 2 * num_frequencies * self.output_dim
+
         
         modules = [nn.Linear(self.spatial_input_dim, spatial_layers[0])]
         for i in range(len(spatial_layers) - 1):
@@ -100,9 +109,11 @@ class SeparatedNetFourier(dde.nn.pytorch.NN):
             raise ValueError(f"Unknown freq_type '{freq_type}'. Choose 'linear' or 'exponential'.")
 
     def forward(self, inputs):
+
         # Split spatial and temporal coordinates
         spatial_coords = inputs[:, :-1]  # All columns except last
         t = inputs[:, -1:]               # Last column (time)
+
         
         # Ensure frequencies are on the same device as input
         if self.freqs.device != t.device:
@@ -123,4 +134,6 @@ class SeparatedNetFourier(dde.nn.pytorch.NN):
         # temporal_features: [batch, 2*num_frequencies]
         output = torch.sum(spatial_features * temporal_features.unsqueeze(1), dim=2)  # [batch, output_dim]
         
+
+
         return output
