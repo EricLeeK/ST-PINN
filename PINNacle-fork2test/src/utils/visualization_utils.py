@@ -1,7 +1,13 @@
 # visualization_utils.py
 # Reusable visualization functions for PINN experiments
 
-import torch
+try:
+    import torch
+    TORCH_AVAILABLE = True
+except ImportError:
+    TORCH_AVAILABLE = False
+    torch = None
+
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
@@ -87,18 +93,31 @@ def generate_burgers_heatmaps(model, exp_name, device='cpu', data_file=None):
         return {"error": f"File parsing error: {e}"}
     
     # Generate prediction grid
-    model.net.eval()
-    with torch.no_grad():
-        # Create coordinate grid matching the reference solution
-        T_grid, X_grid = np.meshgrid(t_exact_vec, x_exact_vec)
-        x_flat = torch.tensor(X_grid.flatten(), dtype=torch.float32, device=device).unsqueeze(1)
-        t_flat = torch.tensor(T_grid.flatten(), dtype=torch.float32, device=device).unsqueeze(1)
+    if hasattr(model, 'net'):
+        model.net.eval()
+    
+    # Create coordinate grid matching the reference solution
+    T_grid, X_grid = np.meshgrid(t_exact_vec, x_exact_vec)
+    
+    if TORCH_AVAILABLE and torch is not None:
+        with torch.no_grad():
+            x_flat = torch.tensor(X_grid.flatten(), dtype=torch.float32, device=device).unsqueeze(1)
+            t_flat = torch.tensor(T_grid.flatten(), dtype=torch.float32, device=device).unsqueeze(1)
+            
+            # Create input tensor [x, t] for the model
+            inputs = torch.cat([x_flat, t_flat], dim=1)
+            
+            # Get model predictions - use DeepXDE predict method
+            u_pred_flat = model.predict(inputs.cpu().numpy())
+            U_pred = u_pred_flat.reshape(X_grid.shape)
+    else:
+        # Fallback for when torch is not available (testing)
+        x_flat = X_grid.flatten().reshape(-1, 1)
+        t_flat = T_grid.flatten().reshape(-1, 1)
+        inputs = np.hstack([x_flat, t_flat])
         
-        # Create input tensor [x, t] for the model
-        inputs = torch.cat([x_flat, t_flat], dim=1)
-        
-        # Get model predictions - use DeepXDE predict method
-        u_pred_flat = model.predict(inputs.cpu().numpy())
+        # Get model predictions
+        u_pred_flat = model.predict(inputs)
         U_pred = u_pred_flat.reshape(X_grid.shape)
     
     # Calculate error
