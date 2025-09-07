@@ -109,18 +109,18 @@ if __name__ == "__main__":
             results = generate_burgers_heatmaps(test_model, exp_name, device)
             
             if "error" not in results:
-                print(f"✓ 可视化完成！L2误差: {results['l2_error']:.6f}")
-                print(f"  热图保存路径: {results['heatmap_path']}")
-                print(f"  时间切片图保存路径: {results['slices_path']}")
+                print(f"可视化完成！L2误差: {results['l2_error']:.6f}")
+                print(f"热图保存路径: {results['heatmap_path']}")
+                print(f"时间切片图保存路径: {results['slices_path']}")
             else:
-                print(f"✗ 可视化失败: {results['error']}")
+                print(f"可视化失败: {results['error']}")
                 
         except Exception as e:
-            print(f"✗ 加载模型或生成可视化时出错: {e}")
+            print(f"加载模型或生成可视化时出错: {e}")
             import traceback
             traceback.print_exc()
     else:
-        print(f"✗ 未找到模型检查点，跳过可视化")
+        print(f"未找到模型检查点，跳过可视化")
         print(f"  搜索路径: {checkpoint_pattern}")
     
     print(">>> 所有任务完成！")

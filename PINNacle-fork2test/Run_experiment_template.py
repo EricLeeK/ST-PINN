@@ -67,7 +67,6 @@ if __name__ == "__main__":
     print("\n>>> 开始生成可视化图表...")
     
     # Import visualization utilities
-    from visualization_utils import generate_burgers_heatmaps
     import glob
     
     # Find the latest model checkpoint
