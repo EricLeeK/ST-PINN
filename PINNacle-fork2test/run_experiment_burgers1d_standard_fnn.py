@@ -1,63 +1,66 @@
-# run_my_experiment.py
+# run_experiment_burgers1d_standard_fnn.py
+# Standard feedforward neural network experiment for 1D Burgers equation
 
-# === 关键修正1：在导入任何东西之前，设置后端 ===
+# === Backend setup ===
 import os
 os.environ['DDE_BACKEND'] = 'pytorch'
 
-# 1. 导入我们需要的工具
-# --------------------------------------------------------------------------
+# Import required libraries
 import deepxde as dde
 import torch
 
 from trainer import Trainer 
 
-# === 关键修正2：导入正确的类名 ===
-from src.pde.burgers import Burgers1D  # <-- 正确的类名是 Burgers
-# ==================================
-
-from src.model.st_pinn import SeparatedNetPolynomial
+# Import PDE class and standard FNN model
+from src.pde.burgers import Burgers1D
+from src.model.fnn import FNN
 from src.utils.callbacks import TesterCallback
 
-# 3. 定义“模型工厂”函数
-# ==========================================================================
+# Define model factory function
 def get_model():
-    # === 关键修正：使用完全正确的类来实例化 ===
-    pde = Burgers1D()  # <-- THE KEY FIX!
-    # ======================================
-    
-    net = SeparatedNetPolynomial(
-        layer_sizes=[pde.input_dim, 0, pde.output_dim],
-        activation=None, kernel_initializer=None,
-        spatial_layers=[64, 64, 64], poly_degree=20
+    # Initialize 1D Burgers equation with standard parameters
+    pde = Burgers1D(
+        datapath=r"PINNacle-fork2test/ref/burgers1d.dat",
+        geom=[-1, 1],           # Spatial domain
+        time=[0, 1],            # Time domain  
+        nu=0.01 / 3.14159       # Viscosity parameter
     )
     
+    # Create standard feedforward neural network
+    # Input: [x, t] (2D), Output: [u] (1D)
+    net = FNN(
+        layer_sizes=[2, 64, 64, 64, 64, 1],  # Standard architecture: 2 -> 64 -> 64 -> 64 -> 64 -> 1
+        activation="tanh",                    # Tanh activation
+        kernel_initializer="Glorot normal"   # Xavier normal initialization
+    )
+    
+    # Create and compile model
     model = pde.create_model(net)
     model.compile(optimizer=torch.optim.Adam(net.parameters(), lr=1e-3))
     
     return model
 
-# 4. 定义训练参数
-# ==========================================================================
+# Define training parameters
 train_args = {
-    'iterations': 20000,
+    'iterations': 20000,  # Same training iterations as other experiments
     'callbacks': [TesterCallback(log_every=1000)]
 }
 
-# 5. 主程序：开始实验！
-# ==========================================================================
+# Main execution
 if __name__ == "__main__":
+    # Backend configuration
     if dde.backend.backend_name == "pytorch":
         if torch.cuda.is_available():
             torch.set_default_device('cuda')
         torch.set_default_dtype(torch.float32)
 
-    # 实例化 Trainer
-    trainer = Trainer(exp_name="MyFinalExperiment_Poly_Burgers1D", device="0")
+    # Initialize trainer
+    trainer = Trainer(exp_name="Burgers1D_Standard_FNN", device="0")
     
-    # 添加任务
+    # Add experiment task
     trainer.add_task(get_model, train_args)
 
-    print(">>> 实验开始！所有配置已修正，目标：Burgers1D。")
+    print(">>> 开始实验！1D伯格斯方程 + 标准前馈神经网络")
     trainer.train_all()
     print(">>> 实验完成！")
     
@@ -71,7 +74,7 @@ if __name__ == "__main__":
     import glob
     
     # Find the latest model checkpoint
-    exp_name = "MyFinalExperiment_Poly_Burgers1D"
+    exp_name = "Burgers1D_Standard_FNN"
     checkpoint_pattern = f"runs/{exp_name}/*/*.pt"
     checkpoints = glob.glob(checkpoint_pattern)
     
