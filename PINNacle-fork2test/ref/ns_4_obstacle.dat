@@ -4,7 +4,7 @@
 % Dimension:          2
 % Nodes:              21651
 % Expressions:        3
-% Description:        速度场，x 分量, 速度场，y 分量, 压力
+% Description:        s
 % Length unit:        m
 % x                       y                        u (m/s)                  v (m/s)                  p (Pa)
 0                         0.012160684765562407     0.0480512100463801       0                        3.761105585517127

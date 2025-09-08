@@ -7,7 +7,7 @@ from . import baseclass
 
 class Burgers1D(baseclass.BaseTimePDE):
 
-    def __init__(self, datapath="D:/scientific_research/SelfCode/Spatio_Temporal_Neural_Network/PINNacle-fork2test/ref/burgers1d.dat", geom=[-1, 1], time=[0, 1], nu=0.01 / np.pi):
+    def __init__(self, datapath="PINNacle-fork2test/ref/burgers1d.dat", geom=[-1, 1], time=[0, 1], nu=0.01 / np.pi):
         super().__init__()
         # output dim
         self.output_dim = 1

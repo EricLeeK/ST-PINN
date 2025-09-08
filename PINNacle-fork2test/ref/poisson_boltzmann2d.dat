@@ -4,7 +4,7 @@
 % Dimension:          2
 % Nodes:              3236
 % Expressions:        1
-% Description:        因变量 u
+% Description:         u
 % Length unit:        m
 % X                       Y                        u (1)
 -1                        -0.9600000000000002      0.20000000000000004

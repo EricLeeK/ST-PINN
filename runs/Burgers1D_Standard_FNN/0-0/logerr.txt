@@ -1,17 +1,24 @@
-C:\Users\chrisv\.conda\envs\ml_torch\Lib\site-packages\torch\autograd\graph.py:825: UserWarning: Attempting to run cuBLAS, but there was no current CUDA context! Attempting to set the primary context... (Triggered internally at C:\cb\pytorch_1000000000000\work\aten\src\ATen\cuda\CublasHandlePool.cpp:135.)
-  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
-d:\scientific_research\SelfCode\Spatio_Temporal_Neural_Network\PINNacle-fork2test\run_experiment_burgers1d_standard_fnn.py:93: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
-  checkpoint = torch.load(latest_checkpoint, map_location='cpu')
 Traceback (most recent call last):
-  File "d:\scientific_research\SelfCode\Spatio_Temporal_Neural_Network\PINNacle-fork2test\run_experiment_burgers1d_standard_fnn.py", line 116, in <module>
-      File "d:\scientific_research\SelfCode\Spatio_Temporal_Neural_Network\PINNacle-fork2test\trainer.py", line 25, in write
-    self.file.write(data)
-UnicodeEncodeError: 'gbk' codec can't encode character '\u2717' in position 0: illegal multibyte sequence
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "d:\scientific_research\SelfCode\Spatio_Temporal_Neural_Network\PINNacle-fork2test\run_experiment_burgers1d_standard_fnn.py", line 119, in <module>
-      File "d:\scientific_research\SelfCode\Spatio_Temporal_Neural_Network\PINNacle-fork2test\trainer.py", line 25, in write
-    self.file.write(data)
-UnicodeEncodeError: 'gbk' codec can't encode character '\u2717' in position 0: illegal multibyte sequence
+  File "d:\scientific_research\SelfCode\Spatio_Temporal_Neural_Network\PINNacle-fork2test\run_experiment_burgers1d_standard_fnn.py", line 64, in <module>
+    trainer.train_all()
+  File "d:\scientific_research\SelfCode\Spatio_Temporal_Neural_Network\PINNacle-fork2test\trainer.py", line 98, in train_all
+    model = get_model()
+            ^^^^^^^^^^^
+  File "d:\scientific_research\SelfCode\Spatio_Temporal_Neural_Network\PINNacle-fork2test\run_experiment_burgers1d_standard_fnn.py", line 22, in get_model
+    pde = Burgers1D(
+          ^^^^^^^^^^
+  File "d:\scientific_research\SelfCode\Spatio_Temporal_Neural_Network\PINNacle-fork2test\src\pde\burgers.py", line 31, in __init__
+    self.load_ref_data(datapath)
+  File "d:\scientific_research\SelfCode\Spatio_Temporal_Neural_Network\PINNacle-fork2test\src\pde\baseclass.py", line 213, in load_ref_data
+    super(BaseTimePDE, self).load_ref_data(datapath, transform_fn, t_transpose)
+  File "d:\scientific_research\SelfCode\Spatio_Temporal_Neural_Network\PINNacle-fork2test\src\pde\baseclass.py", line 92, in load_ref_data
+    self.ref_data = np.loadtxt(datapath, comments="%", encoding='utf-8').astype(np.float32)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\chrisv\.conda\envs\ml_torch\Lib\site-packages\numpy\lib\_npyio_impl.py", line 1381, in loadtxt
+    arr = _read(fname, dtype=dtype, comment=comment, delimiter=delimiter,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\chrisv\.conda\envs\ml_torch\Lib\site-packages\numpy\lib\_npyio_impl.py", line 1021, in _read
+    arr = _load_from_filelike(
+          ^^^^^^^^^^^^^^^^^^^^
+  File "<frozen codecs>", line 322, in decode
+UnicodeDecodeError: 'utf-8' codec can't decode bytes in position 190-191: invalid continuation byte
