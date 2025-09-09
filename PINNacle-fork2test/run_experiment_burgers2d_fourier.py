@@ -110,7 +110,7 @@ if __name__ == "__main__":
             
             # Generate visualizations
             device = 'cuda' if torch.cuda.is_available() else 'cpu'
-            results = generate_2d_vector_visualization(test_model, exp_name, device, 'ref/burgers2d_1.dat')
+            results = generate_2d_vector_visualization(test_model, exp_name, device, 'PINNacle-fork2test/ref/burgers2d_1.dat')
             
             if "error" not in results:
                 print(f"可视化完成！L2误差: {results['l2_error']:.6f}")

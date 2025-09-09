@@ -33,7 +33,7 @@ def get_model():
         kernel_initializer=None,
         spatial_layers=[64, 64, 64],      # Same architecture as polynomial version
         num_frequencies=12,                # Reasonable number of Fourier modes
-        freq_type="exponential",           # Exponential frequency distribution
+        freq_type="linear",           # Exponential frequency distribution
         freq_scale=1.5                     # Moderate frequency scaling
     )
     

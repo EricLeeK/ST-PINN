@@ -34,7 +34,7 @@ def get_model():
         kernel_initializer=None,
         spatial_layers=[128, 128, 128, 128],  # Deep network for multiscale features
         num_frequencies=25,                    # Many Fourier modes for complex temporal behavior
-        freq_type="exponential",               # Exponential frequency distribution
+        freq_type="linear",               # Exponential frequency distribution
         freq_scale=1.0                         # Standard frequency scaling
     )
     
@@ -107,7 +107,7 @@ if __name__ == "__main__":
             
             # Generate visualizations
             device = 'cuda' if torch.cuda.is_available() else 'cpu'
-            results = generate_2d_scalar_visualization(test_model, exp_name, device, 'ref/heat_multiscale.dat')
+            results = generate_2d_scalar_visualization(test_model, exp_name, device, 'PINNacle-fork2test/ref/heat_multiscale.dat')
             
             if "error" not in results:
                 print(f"可视化完成！L2误差: {results['l2_error']:.6f}")

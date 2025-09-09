@@ -32,7 +32,7 @@ def generate_burgers_heatmaps(model, exp_name, device='cpu', data_file=None):
     
     # Default data file path - relative to experiment run directory
     if data_file is None:
-        data_file = 'ref/burgers1d.dat'
+        data_file = 'PINNacle-fork2test/ref/burgers1d.dat'
     
     # Create results directory
     results_dir = f"runs/{exp_name}/visualizations"

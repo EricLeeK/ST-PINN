@@ -33,7 +33,7 @@ def get_model():
         activation=None, 
         kernel_initializer=None,
         spatial_layers=[128, 128, 128], # Deeper network for wave equation
-        poly_degree=25                   # Higher degree for wave dynamics
+        poly_degree=10                   # Higher degree for wave dynamics
     )
     
     # Create and compile model
@@ -44,7 +44,7 @@ def get_model():
 
 # Define training parameters
 train_args = {
-    'iterations': 18000,
+    'iterations': 10000,
     'callbacks': [TesterCallback(log_every=1000)]
 }
 

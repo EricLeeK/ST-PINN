@@ -11,7 +11,7 @@ from ..utils.random import generate_heat_2d_coef
 
 class Heat2D_VaryingCoef(baseclass.BaseTimePDE):
 
-    def __init__(self, datapath="ref/heat_darcy.dat", bbox=[0, 1, 0, 1, 0, 5], A=200, m=(1, 5, 1)):
+    def __init__(self, datapath="PINNacle-fork2test/ref/heat_darcy.dat", bbox=[0, 1, 0, 1, 0, 5], A=200, m=(1, 5, 1)):
         super().__init__()
         # output dim
         self.output_dim = 1
@@ -23,7 +23,7 @@ class Heat2D_VaryingCoef(baseclass.BaseTimePDE):
 
         # PDE
         # self.heat_2d_coef = generate_heat_2d_coef(N_res=256, alpha=4, bbox=bbox[0:4])
-        self.heat_2d_coef = np.loadtxt("ref/heat_2d_coef_256.dat")
+        self.heat_2d_coef = np.loadtxt("PINNacle-fork2test/ref/heat_2d_coef_256.dat")
 
         @cache_tensor
         def coef(x):
@@ -121,7 +121,7 @@ class Heat2D_Multiscale(baseclass.BaseTimePDE):
 
 class Heat2D_ComplexGeometry(baseclass.BaseTimePDE):
 
-    def __init__(self, datapath="ref/heat_complex.dat", bbox=[-8, 8, -12, 12, 0, 3]):
+    def __init__(self, datapath="PINNacle-fork2test/ref/heat_complex.dat", bbox=[-8, 8, -12, 12, 0, 3]):
         super().__init__()
         # output dim
         self.output_dim = 1
@@ -197,7 +197,7 @@ class Heat2D_ComplexGeometry(baseclass.BaseTimePDE):
 
 class Heat2D_LongTime(baseclass.BaseTimePDE):
 
-    def __init__(self, datapath="ref/heat_longtime.dat", bbox=[0, 1, 0, 1, 0, 100], k=1, m1=4, m2=2):
+    def __init__(self, datapath="PINNacle-fork2test/ref/heat_longtime.dat", bbox=[0, 1, 0, 1, 0, 100], k=1, m1=4, m2=2):
         super().__init__()
         # output dim
         self.output_dim = 1

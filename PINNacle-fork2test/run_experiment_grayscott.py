@@ -20,7 +20,7 @@ from src.utils.callbacks import TesterCallback
 def get_model():
     # Initialize Gray-Scott reaction-diffusion system
     pde = GrayScottEquation(
-        datapath=r"ref/grayscott.dat",
+        datapath=r"PINNacle-fork2test/ref/grayscott.dat",
         bbox=[-1, 1, -1, 1, 0, 200],   # [x_min, x_max, y_min, y_max, t_min, t_max]
         b=0.04,                        # Feed rate
         d=0.1,                         # Kill rate  
@@ -47,7 +47,7 @@ def get_model():
 
 # Define training parameters
 train_args = {
-    'iterations': 30000,  # Many iterations for complex chaotic system
+    'iterations': 15000,  # Many iterations for complex chaotic system
     'callbacks': [TesterCallback(log_every=2000)]
 }
 
@@ -108,7 +108,7 @@ if __name__ == "__main__":
             
             # Generate visualizations
             device = 'cuda' if torch.cuda.is_available() else 'cpu'
-            results = generate_2d_vector_visualization(test_model, exp_name, device, 'ref/grayscott.dat')
+            results = generate_2d_vector_visualization(test_model, exp_name, device, 'PINNacle-fork2test/ref/grayscott.dat')
             
             if "error" not in results:
                 print(f"可视化完成！L2误差: {results['l2_error']:.6f}")

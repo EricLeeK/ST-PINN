@@ -63,7 +63,7 @@ class Wave1D(baseclass.BasePDE):
 
 class Wave2D_Heterogeneous(baseclass.BasePDE):
 
-    def __init__(self, datapath="ref/wave_darcy.dat", bbox=[-1, 1, -1, 1, 0, 5], mu=(-0.5, 0), sigma=0.3):
+    def __init__(self, datapath="PINNacle-fork2test/ref/wave_darcy.dat", bbox=[-1, 1, -1, 1, 0, 5], mu=(-0.5, 0), sigma=0.3):
         super().__init__()
         # output dim
         self.output_dim = 1
@@ -74,7 +74,7 @@ class Wave2D_Heterogeneous(baseclass.BasePDE):
 
         # PDE
         # self.darcy_2d_coef = generate_darcy_2d_coef(N_res=256, alpha=4, bbox=bbox[0:4])
-        self.darcy_2d_coef = np.loadtxt("ref/darcy_2d_coef_256.dat")
+        self.darcy_2d_coef = np.loadtxt("PINNacle-fork2test/ref/darcy_2d_coef_256.dat")
 
         @cache_tensor
         def coef(x):
