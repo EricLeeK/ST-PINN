@@ -1,5 +1,5 @@
-# run_experiment_kuramoto_sivashinsky.py
-# Experiment for Kuramoto-Sivashinsky equation using polynomial time basis
+# run_experiment_burgers1d_polynomial.py
+# Experiment for 1D Burgers equation using Polynomial time basis
 
 # === Backend setup ===
 import os
@@ -8,46 +8,44 @@ os.environ['DDE_BACKEND'] = 'pytorch'
 # Import required libraries
 import deepxde as dde
 import torch
-import numpy as np
 
 from trainer import Trainer 
 
 # Import PDE class and model
-from src.pde.chaotic import KuramotoSivashinskyEquation
+from src.pde.burgers import Burgers1D
 from src.model.st_pinn import SeparatedNetPolynomial
 from src.utils.callbacks import TesterCallback
+from src.utils.visualization_utils import generate_burgers_heatmaps
 
 # Define model factory function
 def get_model():
-    # Initialize Kuramoto-Sivashinsky equation
-    pde = KuramotoSivashinskyEquation(
-        datapath=r"PINNacle-fork2test/ref/Kuramoto_Sivashinsky.dat",
-        bbox=[0, 2 * np.pi, 0, 1],     # [x_min, x_max, t_min, t_max]
-        alpha=100 / 16,                # Nonlinear coefficient
-        beta=100 / (16 * 16),          # Second-order diffusion coefficient
-        gamma=100 / (16**4)            # Fourth-order dispersion coefficient
+    # Initialize 1D Burgers equation with same parameters as other versions
+    pde = Burgers1D(
+        datapath=r"PINNacle-fork2test/ref/burgers1d.dat",
+        geom=[-1, 1],           # Spatial domain
+        time=[0, 1],            # Time domain  
+        nu=0.01 / 3.14159       # Viscosity parameter (same as original)
     )
     
-    # Create separated network with polynomial time basis
-    # KS equation has input_dim=2 (x, t) and output_dim=1
+    # Create separated network with Polynomial time basis
     net = SeparatedNetPolynomial(
         layer_sizes=[pde.input_dim, 0, pde.output_dim],
         activation=None, 
         kernel_initializer=None,
-        spatial_layers=[128, 128, 128, 128],  # Deep network for complex chaotic behavior
-        poly_degree=30                         # High polynomial degree for complex temporal dynamics
+        spatial_layers=[64, 64, 64],      # Same architecture as other versions
+        poly_degree=15                    # Reasonable polynomial degree
     )
     
     # Create and compile model
     model = pde.create_model(net)
-    model.compile(optimizer=torch.optim.Adam(net.parameters(), lr=3e-4))  # Conservative learning rate
+    model.compile(optimizer=torch.optim.Adam(net.parameters(), lr=1e-3))  # Same LR as original
     
     return model
 
 # Define training parameters
 train_args = {
-    'iterations': 25000,  # Many iterations for chaotic system
-    'callbacks': [TesterCallback(log_every=1500)]
+    'iterations': 20000,  # Same as other experiments
+    'callbacks': [TesterCallback(log_every=1000)]
 }
 
 # Main execution
@@ -59,12 +57,12 @@ if __name__ == "__main__":
         torch.set_default_dtype(torch.float32)
 
     # Initialize trainer
-    trainer = Trainer(exp_name="KuramotoSivashinsky_Polynomial_Chaotic", device="0")
+    trainer = Trainer(exp_name="Burgers1D_Polynomial", device="0")
     
     # Add experiment task
     trainer.add_task(get_model, train_args)
 
-    print(">>> 开始实验！Kuramoto-Sivashinsky方程 + 多项式时间基")
+    print(">>> 开始实验！1D伯格斯方程 + 多项式时间基")
     trainer.train_all()
     print(">>> 实验完成！")
     
@@ -74,11 +72,10 @@ if __name__ == "__main__":
     print("\n>>> 开始生成可视化图表...")
     
     # Import visualization utilities
-    from src.utils.visualization_utils import generate_1d_visualization
     import glob
     
     # Find the latest model checkpoint
-    exp_name = "KuramotoSivashinsky_Polynomial_Chaotic"
+    exp_name = "Burgers1D_Polynomial"
     checkpoint_pattern = f"runs/{exp_name}/*/*.pt"
     checkpoints = glob.glob(checkpoint_pattern)
     
@@ -107,13 +104,12 @@ if __name__ == "__main__":
             
             # Generate visualizations
             device = 'cuda' if torch.cuda.is_available() else 'cpu'
-            results = generate_1d_visualization(test_model, exp_name, device, 'ref/Kuramoto_Sivashinsky.dat')
+            results = generate_burgers_heatmaps(test_model, exp_name, device)
             
             if "error" not in results:
                 print(f"可视化完成！L2误差: {results['l2_error']:.6f}")
                 print(f"热图保存路径: {results['heatmap_path']}")
-                if 'slices_path' in results:
-                    print(f"时间切片图保存路径: {results['slices_path']}")
+                print(f"时间切片图保存路径: {results['slices_path']}")
             else:
                 print(f"可视化失败: {results['error']}")
                 
