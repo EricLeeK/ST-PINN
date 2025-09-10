@@ -42,7 +42,7 @@ def get_model():
 
 # Define training parameters
 train_args = {
-    'iterations': 2000,  # Same training iterations as other experiments
+    'iterations': 20000,  # Same training iterations as other experiments
     'callbacks': [TesterCallback(log_every=1000)]
 }
 
