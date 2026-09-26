@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./assets/readme/hero.gif" width="100%" alt="Separate learned spatial coefficients from fixed temporal basis functions. Conceptual overview.">
+  <img src="./assets/readme/hero.gif" width="100%" alt="空间系数由网络学习，时间基固定，通过点积重构解；曲线为机制示意。">
 </p>
 
 # 基于时空分解的物理信息神经网络（PINN）PDE求解器

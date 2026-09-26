@@ -1,60 +1,22 @@
 {
   "width": 1200,
   "fps": 30,
-  "duration": 5.2,
+  "duration": 6.0,
   "colors": 256,
   "dither": "none",
+  "transparent_color": "#ff00ff",
   "clip_to_base_alpha": true,
-  "max_size_mb": 2.0,
-  "layers": [
-    {
-      "id": "space",
-      "enter": {
-        "start": 0.15,
-        "end": 1.1,
-        "from": [
-          -20,
-          0
-        ]
-      },
-      "exit": {
-        "start": 4.35,
-        "end": 5.16,
-        "to": [
-          0,
-          -12
-        ]
-      }
-    },
-    {
-      "id": "time",
-      "enter": {
-        "start": 0.43,
-        "end": 1.38,
-        "from": [
-          20,
-          0
-        ]
-      },
-      "exit": {
-        "start": 4.35,
-        "end": 5.16,
-        "to": [
-          0,
-          -12
-        ]
-      }
-    }
-  ],
+  "max_size_mb": 3.0,
+  "layers": [],
   "reveals": [
     {
-      "id": "time-basis",
+      "id": "basis-combination",
       "axis": "x",
-      "start": 0.72,
-      "end": 1.72,
+      "start": 0.4,
+      "end": 1.7,
       "exit": {
-        "start": 4.35,
-        "end": 5.16
+        "start": 5.0,
+        "end": 5.96
       }
     }
   ]
