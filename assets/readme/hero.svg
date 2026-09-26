@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="440" viewBox="0 0 1200 440" role="img" aria-labelledby="title desc">
+  <title id="title">ST-PINN</title>
+  <desc id="desc">Separate learned spatial coefficients from fixed temporal basis functions. The diagram is a conceptual illustration, not a benchmark or application screenshot.</desc>
+  <defs>
+    <clipPath id="frame">
+      <rect width="1200" height="440" rx="24" />
+    </clipPath>
+  </defs>
+  <g clip-path="url(#frame)">
+    <rect x="0" y="0" width="1200" height="440" rx="24" fill="#f0eef5" />
+    <text x="60" y="72" font-family="'SFMono-Regular',Menlo,monospace" font-size="18" font-weight="600" fill="#77669f" text-anchor="start">SPACE–TIME DECOMPOSITION</text>
+    <text x="60" y="166" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC',sans-serif" font-size="88" font-weight="700" fill="#342c4e" text-anchor="start">ST-PINN</text>
+    <text x="60" y="220" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC',sans-serif" font-size="26" font-weight="400" fill="#342c4e" text-anchor="start">Learn space.</text>
+    <text x="60" y="255" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC',sans-serif" font-size="26" font-weight="400" fill="#342c4e" text-anchor="start">Represent time explicitly.</text>
+    <text x="60" y="400" font-family="'SFMono-Regular',Menlo,monospace" font-size="18" font-weight="600" fill="#77669f" text-anchor="start">SPATIAL NETWORK × FIXED TEMPORAL BASIS</text>
+    <text x="716" y="88" font-family="Georgia,'Songti SC',serif" font-size="36" font-weight="500" fill="#342c4e" text-anchor="start">u(x,t) ≈ C(x) · T(t)</text>
+    <g id="space">
+      <rect x="700" y="135" width="202" height="95" rx="8" fill="#d6cfe5" />
+      <text x="726" y="176" font-family="Georgia,'Songti SC',serif" font-size="34" font-weight="600" fill="#342c4e" text-anchor="start">C(x)</text>
+      <text x="726" y="211" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC',sans-serif" font-size="22" font-weight="500" fill="#56476d" text-anchor="start">learned space</text>
+    </g>
+    <g id="time">
+      <rect x="929" y="135" width="207" height="95" rx="8" fill="#77669f" />
+      <text x="951" y="176" font-family="Georgia,'Songti SC',serif" font-size="34" font-weight="600" fill="#fff" text-anchor="start">T(t)</text>
+      <text x="951" y="211" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC',sans-serif" font-size="22" font-weight="500" fill="#fff" text-anchor="start">fixed time basis</text>
+    </g>
+    <path d="M704 331H1130" fill="none" stroke="#c1b9d3" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+    <text x="706" y="397" font-family="'SFMono-Regular',Menlo,monospace" font-size="18" font-weight="600" fill="#77669f" text-anchor="start">POLYNOMIAL / FOURIER BASIS</text>
+    <g id="time-basis">
+      <path d="M704 331 L704.0 331.0 L706.6 328.0 L709.3 325.1 L712.0 322.1 L714.6 319.3 L717.2 316.5 L719.9 313.7 L722.5 311.1 L725.2 308.7 L727.9 306.3 L730.5 304.1 L733.1 302.1 L735.8 300.3 L738.5 298.6 L741.1 297.1 L743.8 295.9 L746.4 294.9 L749.0 294.0 L751.7 293.5 L754.4 293.1 L757.0 293.0 L759.6 293.1 L762.3 293.5 L765.0 294.0 L767.6 294.9 L770.2 295.9 L772.9 297.1 L775.5 298.6 L778.2 300.3 L780.9 302.1 L783.5 304.1 L786.1 306.3 L788.8 308.7 L791.5 311.1 L794.1 313.7 L796.8 316.5 L799.4 319.3 L802.0 322.1 L804.7 325.1 L807.4 328.0 L810.0 331.0 L812.6 334.0 L815.3 336.9 L818.0 339.9 L820.6 342.7 L823.2 345.5 L825.9 348.3 L828.5 350.9 L831.2 353.3 L833.9 355.7 L836.5 357.9 L839.1 359.9 L841.8 361.7 L844.5 363.4 L847.1 364.9 L849.8 366.1 L852.4 367.1 L855.0 368.0 L857.7 368.5 L860.4 368.9 L863.0 369.0 L865.6 368.9 L868.3 368.5 L871.0 368.0 L873.6 367.1 L876.2 366.1 L878.9 364.9 L881.5 363.4 L884.2 361.7 L886.9 359.9 L889.5 357.9 L892.1 355.7 L894.8 353.3 L897.5 350.9 L900.1 348.3 L902.8 345.5 L905.4 342.7 L908.0 339.9 L910.7 336.9 L913.4 334.0 L916.0 331.0 L918.6 328.0 L921.3 325.1 L924.0 322.1 L926.6 319.3 L929.2 316.5 L931.9 313.7 L934.5 311.1 L937.2 308.7 L939.9 306.3 L942.5 304.1 L945.1 302.1 L947.8 300.3 L950.5 298.6 L953.1 297.1 L955.8 295.9 L958.4 294.9 L961.0 294.0 L963.7 293.5 L966.3 293.1 L969.0 293.0 L971.6 293.1 L974.3 293.5 L977.0 294.0 L979.6 294.9 L982.2 295.9 L984.9 297.1 L987.5 298.6 L990.2 300.3 L992.8 302.1 L995.5 304.1 L998.1 306.3 L1000.8 308.7 L1003.5 311.1 L1006.1 313.7 L1008.8 316.5 L1011.4 319.3 L1014.0 322.1 L1016.7 325.1 L1019.3 328.0 L1022.0 331.0 L1024.7 334.0 L1027.3 336.9 L1030.0 339.9 L1032.6 342.7 L1035.2 345.5 L1037.9 348.3 L1040.5 350.9 L1043.2 353.3 L1045.8 355.7 L1048.5 357.9 L1051.2 359.9 L1053.8 361.7 L1056.5 363.4 L1059.1 364.9 L1061.8 366.1 L1064.4 367.1 L1067.0 368.0 L1069.7 368.5 L1072.3 368.9 L1075.0 369.0 L1077.7 368.9 L1080.3 368.5 L1083.0 368.0 L1085.6 367.1 L1088.2 366.1 L1090.9 364.9 L1093.5 363.4 L1096.2 361.7 L1098.8 359.9 L1101.5 357.9 L1104.2 355.7 L1106.8 353.3 L1109.5 350.9 L1112.1 348.3 L1114.8 345.5 L1117.4 342.7 L1120.0 339.9 L1122.7 336.9 L1125.3 334.0 L1128.0 331.0" fill="none" stroke="#77669f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+  </g>
+</svg>

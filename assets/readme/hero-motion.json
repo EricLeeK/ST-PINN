@@ -1,0 +1,61 @@
+{
+  "width": 1200,
+  "fps": 30,
+  "duration": 5.2,
+  "colors": 256,
+  "dither": "none",
+  "clip_to_base_alpha": true,
+  "max_size_mb": 2.0,
+  "layers": [
+    {
+      "id": "space",
+      "enter": {
+        "start": 0.15,
+        "end": 1.1,
+        "from": [
+          -20,
+          0
+        ]
+      },
+      "exit": {
+        "start": 4.35,
+        "end": 5.16,
+        "to": [
+          0,
+          -12
+        ]
+      }
+    },
+    {
+      "id": "time",
+      "enter": {
+        "start": 0.43,
+        "end": 1.38,
+        "from": [
+          20,
+          0
+        ]
+      },
+      "exit": {
+        "start": 4.35,
+        "end": 5.16,
+        "to": [
+          0,
+          -12
+        ]
+      }
+    }
+  ],
+  "reveals": [
+    {
+      "id": "time-basis",
+      "axis": "x",
+      "start": 0.72,
+      "end": 1.72,
+      "exit": {
+        "start": 4.35,
+        "end": 5.16
+      }
+    }
+  ]
+}

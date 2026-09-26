@@ -1,10 +1,14 @@
+<p align="center">
+  <img src="./assets/readme/hero.gif" width="100%" alt="Separate learned spatial coefficients from fixed temporal basis functions. Conceptual overview.">
+</p>
+
 # 基于时空分解的物理信息神经网络（PINN）PDE求解器
 
 ## 摘要 (Abstract)
 
-本项目实现了一种新颖的物理信息神经网络（PINN）架构，专门用于求解各类与时间相关的偏微分方程（PDEs）。其核心创新在于采用了**时空分解（Spatio-temporal Decomposition）**的思想，将待求解的函数 $u(x, t)$ 近似为一个由神经网络学习的**空间系数向量**与一个**预定义的、固定的时间基函数向量**的点积。这种设计将学习的复杂性主要集中在空间维度，而时间演化则由一组解析的基函数显式表达，为处理复杂的时间动态问题提供了一个高效且灵活的框架。
+本项目实现了一种物理信息神经网络（PINN）架构，专门用于求解各类与时间相关的偏微分方程（PDEs）。其核心创新在于采用了**时空分解（Spatio-temporal Decomposition）**的思想，将待求解的函数 $u(x, t)$ 近似为一个由神经网络学习的**空间系数向量**与一个**预定义的、固定的时间基函数向量**的点积。这种设计将学习的复杂性主要集中在空间维度，而时间演化则由一组解析的基函数显式表达，为处理复杂的时间动态问题提供了一种可配置的解表示。
 
-该项目代码结构清晰，实现了模型与实验的完全解耦。所有实验均由配置文件驱动，确保了结果的**完全可追溯与可复现性**，这对于科学研究至关重要。
+模型与实验配置分别组织；运行和比较实验时，请同时保留所用配置、数据与输出记录。
 
 ## 核心思想：时空分解物理信息神经网络
 
@@ -54,8 +58,8 @@ $$
 
 1.  **克隆仓库**
     ```bash
-    git clone <your-repository-url>
-    cd pinn_project
+    git clone https://github.com/EricLeeK/ST-PINN.git
+    cd ST-PINN
     ```
 
 2.  **创建并激活虚拟环境** (推荐)
@@ -84,9 +88,9 @@ $$
 
 ## 如何运行实验
 
-本项目的核心是**配置驱动**。每一个 `train/train_*.py` 脚本的顶部都有一个名为 `config` 的Python字典，它是实验的唯一控制中心。
+本项目的核心是**配置驱动**。每一个 `Trains/train_*.py` 脚本的顶部都有一个名为 `config` 的Python字典，它是实验的唯一控制中心。
 
-1.  **打开一个实验脚本**: 例如 `train/train_allen_cahn.py`。
+1.  **打开一个实验脚本**: 例如 `Trains/train_ac.py`。
 
 2.  **修改 `config` 字典**:
     ```python
@@ -114,7 +118,7 @@ $$
 
 3.  **运行脚本**:
     ```bash
-    python train/train_allen_cahn.py
+    python Trains/train_ac.py
     ```
 
 4.  **查看结果**: 脚本运行结束后，所有结果（配置快照、损失日志、结果图）都会自动保存在 `results/AC_Fourier_Test/` 文件夹中。
@@ -128,7 +132,7 @@ $$
 3.  **定义数据点**: 修改 **数据准备** 部分的代码，以满足新PDE的初始条件（IC）和边界条件（BC）。
 4.  **实现PDE残差**: 在 **训练循环** 中，修改 `pde_residual` 的计算方式，使其与你的新PDE的数学形式一致。
 5.  **（可选）修改可视化**: 如果你有新PDE的参考解，请更新 **可视化** 部分的代码以加载并绘制它。
-6.  **运行**: `python train/train_new_pde.py`
+6.  **运行**: `python Trains/train_new_pde.py`
 
 ### 场景2: 添加一个新的时间基 (Time Basis)
 
@@ -147,3 +151,10 @@ $$
 -   **一维艾伦-卡恩方程 (Allen-Cahn Equation)**
 
 ---
+
+<details>
+<summary>Static overview</summary>
+
+[Open the static SVG](./assets/readme/hero.svg).
+
+</details>
