@@ -206,29 +206,127 @@ $$T_k(t) = \{\sin(\omega_k t), \cos(\omega_k t)\}, \quad \omega_k = k\omega_0$$
 
 ## 可用实验总览 / Available Experiments Overview
 
-本库现包含以下ST-PINN实验，均针对时间相关PDE设计：
+本库现包含以下ST-PINN实验，均针对时间相关PDE设计。每个PDE问题都包含三种网络架构的对比实验：
+
+### 1. Burgers方程实验 / Burgers Equation Experiments
 
 | 实验文件 | PDE类型 | 空间维度 | 输出维度 | 时间基函数 | 复杂度 |
 |----------|---------|----------|----------|------------|--------|
+| `run_experiment_burgers1d_fnn.py` | 1D Burgers | 1D | 1 | 标准FNN | 中等 |
 | `run_experiment_burgers1d_fourier.py` | 1D Burgers | 1D | 1 | Fourier | 中等 |
+| `run_experiment_burgers1d_polynomial.py` | 1D Burgers | 1D | 1 | Polynomial | 中等 |
+| `run_experiment_burgers2d_fnn.py` | 2D Burgers | 2D | 2 | 标准FNN | 高 |
 | `run_experiment_burgers2d_fourier.py` | 2D Burgers | 2D | 2 | Fourier | 高 |
+| `run_experiment_burgers2d_polynomial.py` | 2D Burgers | 2D | 2 | Polynomial | 高 |
+
+### 2. 热方程实验 / Heat Equation Experiments
+
+| 实验文件 | PDE类型 | 空间维度 | 输出维度 | 时间基函数 | 复杂度 |
+|----------|---------|----------|----------|------------|--------|
+| `run_experiment_heat2d_fnn.py` | 2D变系数热方程 | 2D | 1 | 标准FNN | 中等 |
+| `run_experiment_heat2d_fourier.py` | 2D变系数热方程 | 2D | 1 | Fourier | 中等 |
 | `run_experiment_heat2d.py` | 2D变系数热方程 | 2D | 1 | Polynomial | 中等 |
-| `run_experiment_wave1d.py` | 1D波动方程 | 1D | 1 | Polynomial | 低 |
-| `run_experiment_grayscott.py` | Gray-Scott反应扩散 | 2D | 2 | Fourier | 很高 |
-| `run_experiment_kuramoto_sivashinsky.py` | Kuramoto-Sivashinsky | 1D | 1 | Polynomial | 很高 |
+| `run_experiment_heat2d_multiscale_fnn.py` | 2D多尺度热方程 | 2D | 1 | 标准FNN | 高 |
 | `run_experiment_heat2d_multiscale.py` | 2D多尺度热方程 | 2D | 1 | Fourier | 高 |
-| `run_experiment_ns2d_longtime.py` | 2D Navier-Stokes | 2D | 3 | Polynomial | 极高 |
+| `run_experiment_heat2d_multiscale_polynomial.py` | 2D多尺度热方程 | 2D | 1 | Polynomial | 高 |
+
+### 3. 波动方程实验 / Wave Equation Experiments
+
+| 实验文件 | PDE类型 | 空间维度 | 输出维度 | 时间基函数 | 复杂度 |
+|----------|---------|----------|----------|------------|--------|
+| `run_experiment_wave1d_fnn.py` | 1D波动方程 | 1D | 1 | 标准FNN | 低 |
+| `run_experiment_wave1d_fourier.py` | 1D波动方程 | 1D | 1 | Fourier | 低 |
+| `run_experiment_wave1d.py` | 1D波动方程 | 1D | 1 | Polynomial | 低 |
+| `run_experiment_wave2d_longtime_fnn.py` | 2D长时间波动 | 2D | 1 | 标准FNN | 高 |
 | `run_experiment_wave2d_longtime.py` | 2D长时间波动 | 2D | 1 | Fourier | 高 |
+| `run_experiment_wave2d_longtime_polynomial.py` | 2D长时间波动 | 2D | 1 | Polynomial | 高 |
+
+### 4. 反应扩散系统实验 / Reaction-Diffusion System Experiments
+
+| 实验文件 | PDE类型 | 空间维度 | 输出维度 | 时间基函数 | 复杂度 |
+|----------|---------|----------|----------|------------|--------|
+| `run_experiment_grayscott_fnn.py` | Gray-Scott反应扩散 | 2D | 2 | 标准FNN | 很高 |
+| `run_experiment_grayscott.py` | Gray-Scott反应扩散 | 2D | 2 | Fourier | 很高 |
+| `run_experiment_grayscott_polynomial.py` | Gray-Scott反应扩散 | 2D | 2 | Polynomial | 很高 |
+
+### 5. 混沌系统实验 / Chaotic System Experiments
+
+| 实验文件 | PDE类型 | 空间维度 | 输出维度 | 时间基函数 | 复杂度 |
+|----------|---------|----------|----------|------------|--------|
+| `run_experiment_kuramoto_sivashinsky_fnn.py` | Kuramoto-Sivashinsky | 1D | 1 | 标准FNN | 很高 |
+| `run_experiment_kuramoto_sivashinsky_fourier.py` | Kuramoto-Sivashinsky | 1D | 1 | Fourier | 很高 |
+| `run_experiment_kuramoto_sivashinsky.py` | Kuramoto-Sivashinsky | 1D | 1 | Polynomial | 很高 |
+
+### 6. 流体力学实验 / Fluid Dynamics Experiments
+
+| 实验文件 | PDE类型 | 空间维度 | 输出维度 | 时间基函数 | 复杂度 |
+|----------|---------|----------|----------|------------|--------|
+| `run_experiment_ns2d_longtime_fnn.py` | 2D Navier-Stokes | 2D | 3 | 标准FNN | 极高 |
+| `run_experiment_ns2d_longtime_fourier.py` | 2D Navier-Stokes | 2D | 3 | Fourier | 极高 |
+| `run_experiment_ns2d_longtime.py` | 2D Navier-Stokes | 2D | 3 | Polynomial | 极高 |
+
+**实验总计**: 27个实验文件，覆盖9种不同PDE，每种PDE都有3种网络架构对比
 
 **运行建议**:
 1. 首先运行低复杂度实验验证环境配置
 2. 根据计算资源选择合适的实验
 3. 高复杂度实验建议使用GPU加速
+4. 建议按照架构类型进行系统性对比
+
+**架构对比建议**:
+- **标准FNN**: 作为基准baseline，验证问题复杂度
+- **ST-PINN Fourier**: 适合振荡性、长时间动力学问题
+- **ST-PINN Polynomial**: 适合短时间、衰减性动力学问题
 
 **快速测试**:
 ```bash
 cd PINNacle-fork2test
 python run_experiment_wave1d.py  # 最简单的测试
+```
+
+---
+
+## CUDA内存优化 / CUDA Memory Optimization
+
+为了解决2D可视化中的CUDA内存溢出问题，已实现以下优化策略：
+
+### 内存管理策略 / Memory Management Strategy
+
+1. **批处理预测 / Batch Processing**:
+   - 2D可视化函数现在使用批处理方式进行模型预测
+   - 默认批大小设置为8192，可根据GPU内存调整
+   - 每个批次后清理GPU缓存
+
+2. **CPU-GPU数据流 / CPU-GPU Data Flow**:
+   - 所有数据预处理在CPU上完成
+   - 只在必要时将数据传输到GPU
+   - 预测结果立即返回CPU以释放GPU内存
+
+3. **内存清理 / Memory Cleanup**:
+   - 每个批次后调用`torch.cuda.empty_cache()`
+   - 避免GPU内存碎片化
+   - 支持24GB GPU的大规模2D问题可视化
+
+### 使用建议 / Usage Recommendations
+
+- **小内存GPU** (< 8GB): 减少批大小到4096或更小
+- **中等内存GPU** (8-16GB): 使用默认设置
+- **大内存GPU** (> 16GB): 可适当增加批大小到16384
+
+### 代码示例 / Code Example
+
+```python
+# 在可视化函数中的批处理实现
+batch_size = min(8192, len(inputs_np))  # 根据数据量调整
+for start_idx in range(0, len(inputs_np), batch_size):
+    end_idx = min(start_idx + batch_size, len(inputs_np))
+    batch_inputs = inputs_np[start_idx:end_idx]
+    
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()  # 清理GPU缓存
+    
+    batch_pred = model.predict(batch_inputs)
+    pred_list.append(batch_pred)
 ```
 
 ---

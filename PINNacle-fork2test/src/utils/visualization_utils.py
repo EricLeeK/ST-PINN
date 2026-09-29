@@ -584,14 +584,32 @@ def generate_2d_scalar_visualization(model, exp_name, device='cpu', data_file=No
         Y_grid, X_grid = np.meshgrid(y_vec, x_vec)
         T_grid = np.full_like(X_grid, t_val)
         
-        # Get model predictions
+        # Get model predictions with batch processing to avoid CUDA memory issues
         if TORCH_AVAILABLE and torch is not None:
             with torch.no_grad():
-                x_flat = torch.tensor(X_grid.flatten(), dtype=torch.float32, device=device).unsqueeze(1)
-                y_flat = torch.tensor(Y_grid.flatten(), dtype=torch.float32, device=device).unsqueeze(1)
-                t_flat = torch.tensor(T_grid.flatten(), dtype=torch.float32, device=device).unsqueeze(1)
-                inputs = torch.cat([x_flat, y_flat, t_flat], dim=1)
-                u_pred_flat = model.predict(inputs.cpu().numpy())
+                x_flat = X_grid.flatten()
+                y_flat = Y_grid.flatten()
+                t_flat = T_grid.flatten()
+                
+                # Create inputs on CPU first
+                inputs_np = np.column_stack([x_flat, y_flat, t_flat])
+                
+                # Process in batches to avoid CUDA memory overflow
+                batch_size = min(8192, len(inputs_np))  # Reduced batch size for safety
+                u_pred_list = []
+                
+                for start_idx in range(0, len(inputs_np), batch_size):
+                    end_idx = min(start_idx + batch_size, len(inputs_np))
+                    batch_inputs = inputs_np[start_idx:end_idx]
+                    
+                    # Clear GPU cache before each batch
+                    if torch.cuda.is_available():
+                        torch.cuda.empty_cache()
+                    
+                    batch_pred = model.predict(batch_inputs)
+                    u_pred_list.append(batch_pred)
+                
+                u_pred_flat = np.concatenate(u_pred_list, axis=0)
                 U_pred = u_pred_flat.reshape(X_grid.shape)
         else:
             x_flat = X_grid.flatten().reshape(-1, 1)
@@ -681,14 +699,32 @@ def generate_2d_vector_visualization(model, exp_name, device='cpu', data_file=No
         Y_grid, X_grid = np.meshgrid(y_vec, x_vec)
         T_grid = np.full_like(X_grid, t_val)
         
-        # Get model predictions
+        # Get model predictions with batch processing to avoid CUDA memory issues
         if TORCH_AVAILABLE and torch is not None:
             with torch.no_grad():
-                x_flat = torch.tensor(X_grid.flatten(), dtype=torch.float32, device=device).unsqueeze(1)
-                y_flat = torch.tensor(Y_grid.flatten(), dtype=torch.float32, device=device).unsqueeze(1)
-                t_flat = torch.tensor(T_grid.flatten(), dtype=torch.float32, device=device).unsqueeze(1)
-                inputs = torch.cat([x_flat, y_flat, t_flat], dim=1)
-                pred_flat = model.predict(inputs.cpu().numpy())
+                x_flat = X_grid.flatten()
+                y_flat = Y_grid.flatten()
+                t_flat = T_grid.flatten()
+                
+                # Create inputs on CPU first
+                inputs_np = np.column_stack([x_flat, y_flat, t_flat])
+                
+                # Process in batches to avoid CUDA memory overflow
+                batch_size = min(8192, len(inputs_np))  # Reduced batch size for safety
+                pred_list = []
+                
+                for start_idx in range(0, len(inputs_np), batch_size):
+                    end_idx = min(start_idx + batch_size, len(inputs_np))
+                    batch_inputs = inputs_np[start_idx:end_idx]
+                    
+                    # Clear GPU cache before each batch
+                    if torch.cuda.is_available():
+                        torch.cuda.empty_cache()
+                    
+                    batch_pred = model.predict(batch_inputs)
+                    pred_list.append(batch_pred)
+                
+                pred_flat = np.concatenate(pred_list, axis=0)
                 if pred_flat.shape[1] != n_vars:
                     # Handle single output case
                     U_pred = pred_flat.reshape(X_grid.shape)

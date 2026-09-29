@@ -1,5 +1,5 @@
-# run_experiment_kuramoto_sivashinsky.py
-# Experiment for Kuramoto-Sivashinsky equation using polynomial time basis
+# run_experiment_heat2d_multiscale_polynomial.py
+# Experiment for 2D Multiscale Heat equation using Polynomial time basis
 
 # === Backend setup ===
 import os
@@ -8,45 +8,44 @@ os.environ['DDE_BACKEND'] = 'pytorch'
 # Import required libraries
 import deepxde as dde
 import torch
-import numpy as np
 
 from trainer import Trainer 
 
 # Import PDE class and model
-from src.pde.chaotic import KuramotoSivashinskyEquation
+from src.pde.heat import Heat2D_Multiscale
 from src.model.st_pinn import SeparatedNetPolynomial
 from src.utils.callbacks import TesterCallback
+from src.utils.visualization_utils import generate_2d_scalar_visualization
 
 # Define model factory function
 def get_model():
-    # Initialize Kuramoto-Sivashinsky equation
-    pde = KuramotoSivashinskyEquation(
-        datapath=r"PINNacle-fork2test/ref/Kuramoto_Sivashinsky.dat",
-        bbox=[0, 2 * np.pi, 0, 1],     # [x_min, x_max, t_min, t_max]
-        alpha=100 / 16,                # Nonlinear coefficient
-        beta=100 / (16 * 16),          # Second-order diffusion coefficient
-        gamma=100 / (16**4)            # Fourth-order dispersion coefficient
+    # Initialize 2D Multiscale Heat equation
+    pde = Heat2D_Multiscale(
+        datapath=r"PINNacle-fork2test/ref/heat_multiscale.dat",
+        bbox=[0, 1, 0, 1, 0, 5],        # [x_min, x_max, y_min, y_max, t_min, t_max]
+        D_x=1/(500*3.14159)**2,         # Extremely small diffusion in x direction
+        D_y=1/3.14159**2                # Standard diffusion in y direction
     )
     
-    # Create separated network with polynomial time basis
-    # KS equation has input_dim=2 (x, t) and output_dim=1
+    # Create separated network with Polynomial time basis
+    # Note: Heat2D_Multiscale has input_dim=3 (x, y, t) and output_dim=1
     net = SeparatedNetPolynomial(
         layer_sizes=[pde.input_dim, 0, pde.output_dim],
         activation=None, 
         kernel_initializer=None,
-        spatial_layers=[128, 128, 128, 128],  # Deep network for complex chaotic behavior
-        poly_degree=30                         # High polynomial degree for complex temporal dynamics
+        spatial_layers=[128, 128, 128, 128],  # Deep network for multiscale problem
+        poly_degree=25                        # Higher degree for complex temporal dynamics
     )
     
     # Create and compile model
     model = pde.create_model(net)
-    model.compile(optimizer=torch.optim.Adam(net.parameters(), lr=3e-4))  # Conservative learning rate
+    model.compile(optimizer=torch.optim.Adam(net.parameters(), lr=5e-4))  # Smaller LR for stability
     
     return model
 
 # Define training parameters
 train_args = {
-    'iterations': 25000,  # Many iterations for chaotic system
+    'iterations': 25000,  # More iterations for complex multiscale problem
     'callbacks': [TesterCallback(log_every=1500)]
 }
 
@@ -59,12 +58,12 @@ if __name__ == "__main__":
         torch.set_default_dtype(torch.float32)
 
     # Initialize trainer
-    trainer = Trainer(exp_name="KuramotoSivashinsky_Polynomial_Chaotic", device="0")
+    trainer = Trainer(exp_name="Heat2D_Multiscale_Polynomial", device="0")
     
     # Add experiment task
     trainer.add_task(get_model, train_args)
 
-    print(">>> 开始实验！Kuramoto-Sivashinsky方程 + 多项式时间基")
+    print(">>> 开始实验！2D多尺度热方程 + 多项式时间基")
     trainer.train_all()
     print(">>> 实验完成！")
     
@@ -74,11 +73,10 @@ if __name__ == "__main__":
     print("\n>>> 开始生成可视化图表...")
     
     # Import visualization utilities
-    from src.utils.visualization_utils import generate_1d_visualization
     import glob
     
     # Find the latest model checkpoint
-    exp_name = "KuramotoSivashinsky_Polynomial_Chaotic"
+    exp_name = "Heat2D_Multiscale_Polynomial"
     checkpoint_pattern = f"runs/{exp_name}/*/*.pt"
     checkpoints = glob.glob(checkpoint_pattern)
     
@@ -107,13 +105,11 @@ if __name__ == "__main__":
             
             # Generate visualizations
             device = 'cuda' if torch.cuda.is_available() else 'cpu'
-            results = generate_1d_visualization(test_model, exp_name, device, 'ref/Kuramoto_Sivashinsky.dat')
+            results = generate_2d_scalar_visualization(test_model, exp_name, device, 'PINNacle-fork2test/ref/heat_multiscale.dat')
             
             if "error" not in results:
                 print(f"可视化完成！L2误差: {results['l2_error']:.6f}")
-                print(f"热图保存路径: {results['heatmap_path']}")
-                if 'slices_path' in results:
-                    print(f"时间切片图保存路径: {results['slices_path']}")
+                print(f"空间对比图保存路径: {results['heatmap_path']}")
             else:
                 print(f"可视化失败: {results['error']}")
                 
